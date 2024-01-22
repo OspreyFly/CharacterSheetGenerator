@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="static/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="banner" class="header-content" style="padding:0;">
+        <h1>D&D 5e Unofficial Character Sheet Generator</h1>
+    </div>
+    {% block content %}
+    {% endblock %}
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
