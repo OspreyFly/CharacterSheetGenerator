@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+<span>
+    <a href="/home" class="link button">Home</a>
+    <a href="/characters" class="link button">Characters</a>
+    <b style="color:white; text-align:right;">{{ user.username }}</b>
+</span>
 <div>
     <h1 class="header-content">Race</h1>
     <div class="body-content">
@@ -7,11 +12,15 @@
         <h3>Ability Bonuses</h3>
         <ul id="race-bonus"></ul>
         <h3>Age</h3>
+        <p id="age"></p>
         <h3>Alignment</h3>
+        <p id="alignment"></p>
         <h3>Languages</h3>
         <ul id="languages"></ul>
         <h3>Size</h3>
+        <p id="size"></p>
         <h3>Speed</h3>
+        <p id="speed"></p>
         <h3>Proficiencies</h3>
         <ul id="race-proficiencies"></ul>
         <h3>Traits</h3>
@@ -22,21 +31,37 @@
     <div class="body-content">
         <select id="class"></select>
         <h3>Hit Die</h3>
+        <p id="hit-dice"></p>
         <h3>Proficiencies</h3>
         <ul id="class-proficiencies"></ul>
-        <h3>Saving Throws</h3>
-        <ul id="saving-throws"></ul>
         <h3>Starting Equipment</h3>
         <ul id="equipment"></ul>
         <h3>Features</h3>
         <ul id="features"></ul>
-        <h3>Spell Casting</h3>
-        <h4>Cantrips</h4>
-        <ul id="cantrips"></ul>
-        <h4>Spells</h4>
-        <ul id="spells"></ul>
-
+        <h3>Spell Slots</h3>
+        <ul id="spell-slots"></ul>
     </div>
-
+    <h1 class="header-content">Stats</h1>
+    <div class="body-content">
+        <p>Choose how to allocate your stat points. Using the Standard Array system you can assign 15, 14, 13, 12, 10,
+            and 8. Each stat must be a different number.
+        </p>
+        <p>STR</p>
+        <input type="number" id="str-num" min="8" max="15">
+        <p>DEX</p>
+        <input type="number" id="dex-num" min="8" max="15">
+        <p>CON</p>
+        <input type="number" id="con-num" min="8" max="15">
+        <p>INT</p>
+        <input type="number" id="int-num" min="8" max="15">
+        <p>WIS</p>
+        <input type="number" id="wis-num" min="8" max="15">
+        <p>CHA</p>
+        <input type="number" id="cha-num" min="8" max="15">
+    </div>
+    <span>Character Name: </span>
+    <input type="text" id="character-name">
+    <input type="button" id="accept" value="Accept">
 </div>
+<script src="/static/create_character.js"></script>
 {% endblock %}

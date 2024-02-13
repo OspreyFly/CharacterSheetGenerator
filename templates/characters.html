@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<span>
+    <a href="/home" class="link button">Home</a>
+    <a href="/characters" class="link button">Characters</a>
+    <b style="color:white; text-align:right;">{{ user.username }}</b>
+</span>
+<h1 class="header-content">Characters</h1>
+<div class="body-content">
+    <ol>
+        {% for character in characters %}
+        <li><b>{{ character.charactername }}</b>
+            <span>{{ character.race }} - {{ character.charclass }}</span>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+<h1 class="header-content">Generate PDF</h1>
+<div class="body-content">
+    <p>To generate a PDF from a saved character, submit the character's name. You must type it as it appears above.</p>
+    <input type="text" placeholder="Character Name Here" id="character-pdf">
+    <input type="button" id="accept-pdf" value="Make PDF">
+</div>
+<script src="/static/get_pdf.js"></script>
+{% endblock %}

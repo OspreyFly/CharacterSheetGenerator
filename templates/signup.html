@@ -3,14 +3,13 @@
 {% block body_class %}onboarding{% endblock %}
 
 {% block content %}
-
 <span>
     <a href="/home" class="link button">Home</a>
-    <a href="/signup" class="link button">Sign-Up</a>
+    <a href="/login" class="link button">Log-In</a>
 </span>
 
 <div class="header-content">
-    <h2>Welcome back!</h2>
+    <h2>Join D&D Character Generator today!</h2>
 </div>
 <div class="body-content">
     <form method="POST" id="user_form">
@@ -23,7 +22,8 @@
         {{ field(placeholder=field.label.text, class="form-control") }}
         {% endfor %}
 
-        <button class="btn btn-primary btn-block btn-lg">Log in</button>
+        <button class="btn btn-primary btn-lg btn-block">Sign me up!</button>
     </form>
 </div>
+
 {% endblock %}

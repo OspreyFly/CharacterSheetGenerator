@@ -5,8 +5,16 @@ body {
     
 }
 
+h3 {
+    color: gold;
+}
+
 div {
     padding: 20px;
+}
+
+li {
+    color: white;
 }
 
 .button:hover{
@@ -15,6 +23,9 @@ div {
 
 .button{
     color:white;
+    padding: 5px 10px;
+    border: solid 2px white;
+    background-color: rgb(100, 0, 0);
 }
 
 .link {
@@ -26,13 +37,14 @@ div {
     color: white;
     text-align: center;
     font-size: 1.5rem;
-    margin: 0;
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 0;
 }
 
 .body-content{
     background-color: black;
     color: white;
-    text-align: center;
     font-size: 1rem;
     padding: 15px 15px;
 }
