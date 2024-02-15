@@ -141,20 +141,14 @@ def newCharacter():
 @app.route("/makepdf", methods=["POST"])
 def makePdf():
     data = request.json["data"]
-    print("PRINT STATEMENT: ", data)
     character = Characters.query.filter_by(charactername=data).first()
-    print("charactername: ", character.charactername)
-    print("charclass: ", character.charclass)
-    print("race: ", character.race)
     pdfPath = fillFields(character.charactername, character.charclass, character.race)
     return send_file(pdfPath, as_attachment=True)
 
 
 @app.route("/save-character", methods=["POST"])
 def saveCharacter():
-    print("saving...")
     data = request.get_json()
-    print(data)
 
     character_data = {key: data[key] for key in data}
 

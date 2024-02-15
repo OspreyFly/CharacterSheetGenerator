@@ -2,7 +2,6 @@ const makePdfBtn = document.getElementById("accept-pdf");
 const charForPdf = document.getElementById("character-pdf");
 
 makePdfBtn.addEventListener('mousedown', function(){
-    console.log("Trying to make a PDF");
     axios({
         url: '/makepdf',
         method: 'POST',

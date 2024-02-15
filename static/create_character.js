@@ -15,7 +15,6 @@ var classSelect = document.getElementById('class');
 
 // Populate the race dropdown
 for (var i = 0; i < races.length; i++) {
-    console.log("doing race list");
     var option = document.createElement('option');
     option.value = races[i];
     option.text = races[i];
@@ -120,7 +119,7 @@ async function showRace(race){
         }
     })
     .catch(error => {
-        console.log('Error: Race Request', error);
+        console.error('Error: Race Request', error);
     });
 }
 
@@ -167,13 +166,12 @@ async function showClass(adventureClass){
         }
     })
     .catch(error => {
-        console.log('Error: Class Request', error);
+        console.error('Error: Class Request', error);
     });
 
     await axios.get(`https://www.dnd5eapi.co/api/classes/${adventureClass}/levels`)
     .then(content => {
         //Feats
-        console.log('starting feats');
         let features_ul = document.getElementById('features');
         let features = content.data[0].features;
         features_ul.innerHTML = '';
@@ -216,7 +214,7 @@ async function showClass(adventureClass){
         
     })
     .catch(error => {
-        console.log('Error: Class Level Request', error);
+        console.error('Error: Class Level Request', error);
     });
 }
 
@@ -227,7 +225,6 @@ characterName.addEventListener('input', function(){
 
 const acceptBtn = document.getElementById("accept");
 acceptBtn.addEventListener('mousedown', function(){
-    console.log(JSON.stringify(character_info));
     axios.post('/save-character', JSON.stringify(character_info), {
         headers: {'Content-Type': 'application/json'}
     })
