@@ -149,11 +149,11 @@ def makePdf():
 @app.route("/save-character", methods=["POST"])
 def saveCharacter():
     data = request.get_json()
-
+    print(data)
     character_data = {key: data[key] for key in data}
 
     character = Characters(
-        session[CURR_USER_KEY],
+        user_id=session[CURR_USER_KEY],
         **character_data,  # Unpack the dictionary to pass the arguments to the constructor
     )
     # Create a new Character instance with the received data
