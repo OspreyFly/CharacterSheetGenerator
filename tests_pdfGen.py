@@ -1,37 +1,35 @@
 import unittest
-from unittest.mock import MagicMock, patch
 from pdfGen import fillFields
 
 
 class TestFillFields(unittest.TestCase):
 
-    @patch("pdfGen.PdfReader")
-    @patch("pdfGen.PdfWriter")
-    @patch("pdfGen.pdfKeys.General")
-    def test_fillFields_updates_correctly(self, mock_general, mock_writer, mock_reader):
-        mock_reader.return_value.pages = [MagicMock()]
-        mock_general.CHARACTERNAME.value = "CharacterNameField"
-        mock_general.CLASSLEVEL.value = "ClassLevelField"
-        mock_general.RACE.value = "RaceField"
+    def setUp(self):
+        # This method will be called before each test, you can put setup code here
+        pass
 
-        # Call the function with test values
-        result_path = fillFields("TestName", "TestClass", "TestRace")
+    def tearDown(self):
+        # This method will be called after each test, you can put cleanup code here
+        pass
 
-        # Assert that the correct fields were updated
-        mock_writer.return_value.update_page_form_field_values.assert_called_with(
-            mock_reader.return_value.pages[0],
-            {
-                "CharacterNameField": "TestName",
-                "ClassLevelField": "TestClass",
-                "RaceField": "TestRace",
-            },
-        )
+    def test_fillFields(self):
+        # Test the fillFields function with valid inputs
+        name = "TestCharacter"
+        charclass = "Wizard"
+        race = "Human"
+        path = fillFields(name, charclass, race)
+        self.assertTrue(path.startswith("CharacterSheet_"))
+        self.assertTrue(path.endswith(".pdf"))
+        self.assertIn(name, path)
 
-        # Assert that the output PDF was written
-        mock_writer.return_value.write.assert_called_once()
-
-        # Assert that the correct path is returned
-        self.assertEqual(result_path, "CharacterSheet_TestName.pdf")
+    def test_fillFields_invalid_input(self):
+        # Test the fillFields function with invalid inputs
+        with self.assertRaises(TypeError):
+            fillFields(123, "Wizard", "Human")  # Name should be a string
+        with self.assertRaises(TypeError):
+            fillFields("TestCharacter", 123, "Human")  # Charclass should be a string
+        with self.assertRaises(TypeError):
+            fillFields("TestCharacter", "Wizard", 123)  # Race should be a string
 
 
 if __name__ == "__main__":

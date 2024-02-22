@@ -24,6 +24,9 @@ def fillAllFields():
 
 
 def fillFields(name, charclass, race):
+    # Check if the parameters are strings
+    if not all(isinstance(param, str) for param in (name, charclass, race)):
+        raise TypeError("All parameters must be strings.")
     # fill pdf
     writer.update_page_form_field_values(
         writer.pages[0], {General.CHARACTERNAME.value: name}

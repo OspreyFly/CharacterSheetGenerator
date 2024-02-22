@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from flask import (
     Flask,
     render_template,
@@ -9,7 +10,6 @@ from flask import (
     jsonify,
     g,
 )
-from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, UserEditForm, LoginForm
 from models import db, connect_db, User, Characters
@@ -119,48 +119,59 @@ def empty():
 @app.route("/home")
 def home():
     if g.user:
-        user = User.query.get(session[CURR_USER_KEY])
-        return render_template("home.html", user=user)
+        return render_template("home.html", user=g.user)
     else:
         return render_template("home-anon.html")
 
 
 @app.route("/characters")
 def showCharacters():
-    user = User.query.get(session[CURR_USER_KEY])
-    characters = Characters.query.filter_by(user_id=user.id).all()
-    return render_template("characters.html", user=user, characters=characters)
+    if g.user:
+        characters = Characters.query.filter_by(user_id=g.user.id).all()
+        return render_template("characters.html", user=g.user, characters=characters)
+    else:
+        redirect("/signup")
 
 
 @app.route("/new-character")
 def newCharacter():
-    user = User.query.get(session[CURR_USER_KEY])
-    return render_template("new_character.html", user=user)
+    if g.user:
+        return render_template("new_character.html", user=g.user)
+    else:
+        redirect("/signup")
 
 
 @app.route("/makepdf", methods=["POST"])
 def makePdf():
-    data = request.json["data"]
-    character = Characters.query.filter_by(charactername=data).first()
-    pdfPath = fillFields(character.charactername, character.charclass, character.race)
-    return send_file(pdfPath, as_attachment=True)
+    if g.user:
+        data = request.json["data"]
+        character = Characters.query.filter_by(charactername=data).first()
+        pdfPath = fillFields(
+            character.charactername, character.charclass, character.race
+        )
+        return send_file(pdfPath, as_attachment=True)
+    else:
+        redirect("/signup")
 
 
 @app.route("/save-character", methods=["POST"])
 def saveCharacter():
-    data = request.get_json()
-    print(data)
-    character_data = {key: data[key] for key in data}
+    if g.user:
+        data = request.get_json()
+        print(data)
+        character_data = {key: data[key] for key in data}
 
-    character = Characters(
-        user_id=session[CURR_USER_KEY],
-        **character_data,  # Unpack the dictionary to pass the arguments to the constructor
-    )
-    # Create a new Character instance with the received data
-    db.session.add(character)  # Add the new character to the session
-    try:
-        db.session.commit()  # Attempt to commit the changes to the database
-    except Exception as e:
-        db.session.rollback()  # Rollback the session if an error occurred
-        print(f"An error occurred: {e}")
-    return {"message": "Character saved successfully"}, 200
+        character = Characters(
+            user_id=session[CURR_USER_KEY],
+            **character_data,  # Unpack the dictionary to pass the arguments to the constructor
+        )
+        # Create a new Character instance with the received data
+        db.session.add(character)  # Add the new character to the session
+        try:
+            db.session.commit()  # Attempt to commit the changes to the database
+        except Exception as e:
+            db.session.rollback()  # Rollback the session if an error occurred
+            print(f"An error occurred: {e}")
+        return {"message": "Character saved successfully"}, 200
+    else:
+        redirect("/signup")
