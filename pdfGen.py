@@ -6,7 +6,7 @@ writer = PdfWriter("DnD_5E_CharacterSheet_FormFillable.pdf")
 writer.append_pages_from_reader(reader)
 
 
-def fillAllFields():
+def fill_all_fields():
     # formfield needs to be a dict [str: ANY type]
     # must use .value of the pdfKeys property to get its actual value
 
@@ -23,16 +23,16 @@ def fillAllFields():
     writer.write("newpdf.pdf")
 
 
-def fillFields(name, charclass, race):
+def fill_fields(name, char_class, race):
     # Check if the parameters are strings
-    if not all(isinstance(param, str) for param in (name, charclass, race)):
+    if not all(isinstance(param, str) for param in (name, char_class, race)):
         raise TypeError("All parameters must be strings.")
     # fill pdf
     writer.update_page_form_field_values(
         writer.pages[0], {General.CHARACTERNAME.value: name}
     )
     writer.update_page_form_field_values(
-        writer.pages[0], {General.CLASSLEVEL.value: charclass}
+        writer.pages[0], {General.CLASSLEVEL.value: char_class}
     )
     writer.update_page_form_field_values(writer.pages[0], {General.RACE.value: race})
 

@@ -1,5 +1,5 @@
-from models import db, User, Characters, connect_db
 from app import app
+from models import db
 
 # Connect to the database
 

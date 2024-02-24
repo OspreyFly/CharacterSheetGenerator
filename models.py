@@ -1,7 +1,5 @@
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Table, Column, Integer, ForeignKey, MetaData
-from sqlalchemy.orm import relationship
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()

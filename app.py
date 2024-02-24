@@ -1,4 +1,5 @@
 from sqlite3 import IntegrityError
+
 from flask import (
     Flask,
     render_template,
@@ -7,14 +8,12 @@ from flask import (
     send_file,
     session,
     request,
-    jsonify,
     g,
 )
 
-from forms import UserAddForm, UserEditForm, LoginForm
+from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Characters
-
-from pdfGen import fillFields
+from pdfGen import fill_fields
 
 CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
@@ -125,7 +124,7 @@ def home():
 
 
 @app.route("/characters")
-def showCharacters():
+def show_characters():
     if g.user:
         characters = Characters.query.filter_by(user_id=g.user.id).all()
         return render_template("characters.html", user=g.user, characters=characters)
@@ -134,7 +133,7 @@ def showCharacters():
 
 
 @app.route("/new-character")
-def newCharacter():
+def new_character():
     if g.user:
         return render_template("new_character.html", user=g.user)
     else:
@@ -142,20 +141,20 @@ def newCharacter():
 
 
 @app.route("/makepdf", methods=["POST"])
-def makePdf():
+def make_pdf():
     if g.user:
         data = request.json["data"]
         character = Characters.query.filter_by(charactername=data).first()
-        pdfPath = fillFields(
+        pdf_path = fill_fields(
             character.charactername, character.charclass, character.race
         )
-        return send_file(pdfPath, as_attachment=True)
+        return send_file(pdf_path, as_attachment=True)
     else:
         redirect("/signup")
 
 
 @app.route("/save-character", methods=["POST"])
-def saveCharacter():
+def save_character():
     if g.user:
         data = request.get_json()
         print(data)

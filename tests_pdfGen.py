@@ -1,5 +1,5 @@
 import unittest
-from pdfGen import fillFields
+from pdfGen import fill_fields
 
 
 class TestFillFields(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestFillFields(unittest.TestCase):
         name = "TestCharacter"
         charclass = "Wizard"
         race = "Human"
-        path = fillFields(name, charclass, race)
+        path = fill_fields(name, charclass, race)
         self.assertTrue(path.startswith("CharacterSheet_"))
         self.assertTrue(path.endswith(".pdf"))
         self.assertIn(name, path)
@@ -25,11 +25,11 @@ class TestFillFields(unittest.TestCase):
     def test_fillFields_invalid_input(self):
         # Test the fillFields function with invalid inputs
         with self.assertRaises(TypeError):
-            fillFields(123, "Wizard", "Human")  # Name should be a string
+            fill_fields(123, "Wizard", "Human")  # Name should be a string
         with self.assertRaises(TypeError):
-            fillFields("TestCharacter", 123, "Human")  # Charclass should be a string
+            fill_fields("TestCharacter", 123, "Human")  # Charclass should be a string
         with self.assertRaises(TypeError):
-            fillFields("TestCharacter", "Wizard", 123)  # Race should be a string
+            fill_fields("TestCharacter", "Wizard", 123)  # Race should be a string
 
 
 if __name__ == "__main__":

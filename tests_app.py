@@ -1,5 +1,4 @@
 from app import app, g
-from flask import session
 from unittest import TestCase
 
 
@@ -20,7 +19,6 @@ class TestViews(TestCase):
 
             res = client.get("/home")
             html = res.get_data(as_text=True)
-            g.user
             self.assertEqual(res.status_code, 200)
             self.assertIn("Log-In", html)
 
