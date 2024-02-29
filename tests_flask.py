@@ -24,9 +24,10 @@ class CharactersTestCase(TestCase):
             db.session.commit()
             db.session.add(character)
             db.session.commit()
+            self.user_id = user.id
+            self.character_id = character.id
 
-        self.user_id = user.id
-        self.character_id = character.id
+
 
     def tearDown(self):
         db.session.rollback()

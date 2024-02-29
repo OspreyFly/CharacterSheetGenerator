@@ -129,7 +129,7 @@ def show_characters():
         characters = Characters.query.filter_by(user_id=g.user.id).all()
         return render_template("characters.html", user=g.user, characters=characters)
     else:
-        redirect("/signup")
+        return redirect("/signup")
 
 
 @app.route("/new-character")
@@ -137,7 +137,7 @@ def new_character():
     if g.user:
         return render_template("new_character.html", user=g.user)
     else:
-        redirect("/signup")
+        return redirect("/signup")
 
 
 @app.route("/makepdf", methods=["POST"])
@@ -150,7 +150,7 @@ def make_pdf():
         )
         return send_file(pdf_path, as_attachment=True)
     else:
-        redirect("/signup")
+        return redirect("/signup")
 
 
 @app.route("/save-character", methods=["POST"])
@@ -173,4 +173,4 @@ def save_character():
             print(f"An error occurred: {e}")
         return {"message": "Character saved successfully"}, 200
     else:
-        redirect("/signup")
+        return redirect("/signup")

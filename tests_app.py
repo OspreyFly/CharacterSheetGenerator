@@ -1,6 +1,6 @@
-from app import app, g
 from unittest import TestCase
 
+from app import app
 
 class TestViews(TestCase):
     # home

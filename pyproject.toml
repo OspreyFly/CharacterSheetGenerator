@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "charactersheetgenerator"
+version = "0.1.0"
+description = ""
+authors = ["Cody Weber <cody.tv.weber@protonmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.0.2"
+wtforms = "^3.1.2"
+pypdf2 = "^3.0.1"
+flask-wtf = "^1.2.1"
+flask-bcrypt = "^1.0.1"
+flask-sqlalchemy = "^3.1.1"
+psycopg2-binary = "^2.9.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
