@@ -1,3 +1,16 @@
+# Title
+
+Unofficial D&D 5e Character Generator 
+
+## Install
+
+```
+```
+
+## Usage
+
+```
+Created By: Noah Goff
 *D&D API used in project*
 https://www.dnd5eapi.co/api/
 
@@ -10,3 +23,6 @@ Fully implementing the stat scores and prompting all necessary input will enable
 *Tech Stack*
 - Front-end (HTML/CSS/JS/Axios)
 - Back-end (Python/Flask/SQLAlchemy/Postgresql)
+```
+
+
