@@ -1,27 +1,16 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
-from models import User, Characters, Base  # Ensure Base is imported
+from app import db
+from models import User, Characters
 
-# Connect to the database
-engine = create_engine("postgresql:///dndchar")
+db.drop_all()
+db.create_all()
 
-# Reflect the current database schema
-metadata = MetaData(bind=engine, reflect=True)
-
-# Drop all tables
-metadata.drop_all(engine)
-
-# Create new tables
-Base.metadata.create_all(engine)
-
-# Create a session
-Session = sessionmaker(bind=engine)
-session = Session()
+User.query.delete()
+Characters.query.delete()
 
 # Add a user
 user = User.signup(username="example_user", password="example_password")
-session.add(user)
-session.commit()
+db.session.add(user)
+db.session.commit()
 
 # Add a character
 character = Characters(
@@ -30,5 +19,5 @@ character = Characters(
     race="example_race",
     charclass="example_class",
 )
-session.add(character)
-session.commit()
+db.session.add(character)
+db.session.commit()

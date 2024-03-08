@@ -7,17 +7,17 @@ from flask import (
     send_file,
     session,
     request,
-    jsonify,
     g,
 )
 
-from forms import UserAddForm, UserEditForm, LoginForm
+from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Characters
 
 from pdfGen import fillFields
 
 CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
+app.app_context().push()
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///dndchar"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
