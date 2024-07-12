@@ -10,12 +10,12 @@ makePdfBtn.addEventListener('mousedown', function(){
         responseType: 'blob'
     }).then(function (response) {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'DND5e_CharacterSheet.pdf';
-        document.body.appendChild(a);
-        a.click();
+        const blob = document.createElement('a');
+        blob.style.display = 'none';
+        blob.href = url;
+        blob.download = 'DND5e_CharacterSheet.pdf';
+        document.body.appendChild(blob);
+        blob.click();
         window.URL.revokeObjectURL(url);
     }).catch((error) => {
         console.error('Error:', error);

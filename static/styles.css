@@ -9,6 +9,11 @@ h3 {
     color: gold;
 }
 
+label {
+    color: rgb(255, 255, 197);
+    font-weight: bold;
+}
+
 div {
     padding: 20px;
 }
