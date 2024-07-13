@@ -230,4 +230,4 @@ class CharacterUIUpdater {
     }
 }
 
-module.exports =  CharacterUIUpdater;
+export default CharacterUIUpdater;

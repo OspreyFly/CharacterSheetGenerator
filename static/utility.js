@@ -1,6 +1,6 @@
-const CharacterUIUpdater = require("./create_character_ui.js");
+import CharacterUIUpdater from "./create_character_ui.js";
 const API_BASE_URL = "https://www.dnd5eapi.co/api/";
-const axios = require("axios");
+import axios from 'axios';
 
 function createElementOption(value, text) {
     
@@ -39,7 +39,7 @@ const handleSelectionChange = (selectElement) => {
     });
 };
 
-module.exports = {
+export {
     createElementOption,
     populateDropdown,
     fetchData,
