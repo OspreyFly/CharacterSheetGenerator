@@ -36,7 +36,7 @@ class CharacterUIUpdater {
 
             if(!characterData.spellcasting){
                 characterData.spellcasting = characterData.spellcasting || {};
-                characterData.spellcasting.info = [{ name: "Spell Casting Ability", desc: "None" }];
+                characterData.spellcasting.info = [{ name: "Spell Casting Ability", desc: ["None"] }];
             }
             // Update spellcasting details CLASS
             this.updateSpellcasting(characterData.spellcasting);
@@ -76,10 +76,10 @@ class CharacterUIUpdater {
     }
 
     static updateAbilityBonuses(bonuses) {
+        if(!bonuses) return;
         const abilityBonusContainer = document.getElementById('abilityBonuses');
         if (!abilityBonusContainer) return;
         abilityBonusContainer.innerHTML = '';
-        console.log(bonuses);
 
         bonuses.forEach(bonus => {
             const abilityScore = document.getElementById(`ability-score-${bonus.ability_score.index}`);
@@ -98,6 +98,9 @@ class CharacterUIUpdater {
         if (!container) return;
         container.innerHTML = '';
 
+        if(!proficiencies){
+            proficiencies = [{ name: "None"}];
+        }
         proficiencies.forEach(proficiency => {
             const listItem = document.createElement('li');
             listItem.textContent = proficiency.name;
@@ -109,6 +112,10 @@ class CharacterUIUpdater {
         const container = document.getElementById('languages');
         if (!container) return;
         container.innerHTML = '';
+
+        if(!languages){
+            languages = [{ name: "None"}];
+        }
 
         languages.forEach(language => {
             const listItem = document.createElement('li');
@@ -122,6 +129,10 @@ class CharacterUIUpdater {
         if (!container) return;
         container.innerHTML = '';
 
+        if(!traits){
+            traits = [{ name: "None"}];
+        }
+
         traits.forEach(trait => {
             const listItem = document.createElement('li');
             listItem.textContent = trait.name;
@@ -133,6 +144,10 @@ class CharacterUIUpdater {
         const container = document.getElementById('subraces');
         if (!container) return;
         container.innerHTML = '';
+
+        if(!subraces){
+            subraces = [{ name: "None"}];
+        }
 
         subraces.forEach(subrace => {
             const listItem = document.createElement('li');
@@ -215,4 +230,4 @@ class CharacterUIUpdater {
     }
 }
 
-export default CharacterUIUpdater;
+module.exports =  CharacterUIUpdater;

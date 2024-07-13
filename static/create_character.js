@@ -1,6 +1,6 @@
 import CharacterUIUpdater from "./create_character_ui.js";
 const updateUI = CharacterUIUpdater.updateUI;
-import { populateDropdown, handleSelectionChange, fetchAndDisplayData, API_BASE_URL } from "./utility.js";
+import { populateDropdown, handleSelectionChange, fetchData, API_BASE_URL } from "./utility.js";
 
 
 
@@ -17,8 +17,14 @@ populateDropdown(raceSelect, RACES);
 populateDropdown(classSelect, CLASSES);
 
 // Fetch API data and apply for default dropdown options
-fetchAndDisplayData(`${API_BASE_URL}races/dragonborn`, updateUI);
-fetchAndDisplayData(`${API_BASE_URL}classes/barbarian`, updateUI);
+async function initializeUI() {
+    const def_race_data = await fetchData(`${API_BASE_URL}races/dragonborn`);
+    const def_class_data = await fetchData(`${API_BASE_URL}classes/barbarian`);
+    updateUI(def_race_data);
+    updateUI(def_class_data);
+}
+
+initializeUI();
 
 // Detect selection change, make API call, and update the UI
 handleSelectionChange(raceSelect, updateUI);
