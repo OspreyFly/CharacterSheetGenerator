@@ -1,9 +1,8 @@
 import CharacterUIUpdater from "./create_character_ui.js";
 const API_BASE_URL = "https://www.dnd5eapi.co/api/";
-import axios from 'axios';
+//import axios from 'axios'; Only for testing
 
-function createElementOption(value, text) {
-    
+function createElementOption(value, text) {  
     const option = document.createElement('option');
     option.value = value;
     option.text = text;
@@ -26,15 +25,15 @@ const fetchData = async (url) => {
 };
 
 
-const handleSelectionChange = (selectElement) => {
-    selectElement.addEventListener('change', () => {
+const handleSelectionChange =  (selectElement) => {
+    selectElement.addEventListener('change', async () => {
         const selectedValue = selectElement.value.toLowerCase();
         if(selectElement.id === "race"){
-            const race_data = fetchData(`${API_BASE_URL}races/${selectedValue}`);
-            CharacterUIUpdater.updateUI(race_data);
+            const race_data = await fetchData(`${API_BASE_URL}races/${selectedValue}`);
+            CharacterUIUpdater.updateUI(race_data, 'race');
         }else{
-            const class_data = fetchData(`${API_BASE_URL}classes/${selectedValue}`);
-            CharacterUIUpdater.updateUI(class_data);
+            const class_data = await fetchData(`${API_BASE_URL}classes/${selectedValue}`);
+            CharacterUIUpdater.updateUI(class_data, 'class');
         }
     });
 };

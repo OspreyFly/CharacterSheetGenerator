@@ -1,14 +1,15 @@
 class CharacterUIUpdater {
-    static updateUI = (characterData) => {
+    static updateUI = (characterData, type) => {
         try{
-            if(!characterData.hit_die){
+            if(type === 'race'){
+                console.log('race hit');
                 // Update basic details RACE
             
                 this.updateBasicDetails(characterData);
 
                 // Update ability bonuses RACE
                 this.updateAbilityBonuses(characterData.ability_bonuses);
-
+                console.log('past abilities');
                 // Update starting proficiencies RACE
                 this.updateStartingProficiencies(characterData.starting_proficiencies);
 
@@ -20,7 +21,10 @@ class CharacterUIUpdater {
 
                 // Update subraces RACE
                 this.updateSubraces(characterData.subraces);
-            }else{
+            }
+
+            if(type === 'class'){
+                console.log('class hit');
                 // Update proficiency choices CLASS
                 this.updateProficiencyChoices(characterData.proficiency_choices);
 
@@ -38,7 +42,7 @@ class CharacterUIUpdater {
                     characterData.spellcasting.info = [{ name: "Spell Casting Ability", desc: ["None"] }];
                 }
                 // Update spellcasting details CLASS
-                this.updateSpellcasting(characterData.spellcasting);
+                this.updateSpellCasting(characterData.spellcasting);
             }
         }catch(err){
             return err.message;
@@ -51,17 +55,22 @@ class CharacterUIUpdater {
             const alignmentElement = document.getElementById('characterAlignment');
             const sizeElement = document.getElementById('characterSize');
     
-            if (speedElement && alignmentElement && sizeElement) {
-                speedElement.textContent = characterData.speed;
-                alignmentElement.textContent = characterData.alignment;
-                sizeElement.textContent = characterData.size;
-            } else {
+            if (!speedElement || !alignmentElement || !sizeElement) {
                 throw new Error("One or more elements not found");
             }
+    
+            if (!(characterData.hasOwnProperty('speed') && characterData.hasOwnProperty('alignment') && characterData.hasOwnProperty('size'))) {
+                throw new Error("Missing required characterData properties: speed, alignment, size");
+            }
+    
+            speedElement.textContent = characterData.speed;
+            alignmentElement.textContent = characterData.alignment;
+            sizeElement.textContent = characterData.size;
         } catch (err) {
             throw err;
         }
     }
+    
     
 
     static updateProficiencyChoices(proficiencyChoices) {
@@ -69,17 +78,23 @@ class CharacterUIUpdater {
         if (!container) return;
         container.innerHTML = '';
         
-        proficiencyChoices.forEach(choice => {
+        if(!proficiencyChoices){
+            throw new Error("Missing proficiency choices!");
+        }
+        const options = proficiencyChoices.from.options;
+        
+
+        for(let i = 0; i < proficiencyChoices.choose; i++){
             const selectElement = document.createElement('select');
-            selectElement.id = `proficiencyChoice-${choice.index}`;
-            selectElement.setAttribute('name', choice.index);
+            selectElement.id = `proficiencyChoice-${options[i].index}`;
+            selectElement.setAttribute('name', options[i].index);
 
             const placeholderOption = document.createElement('option');
             placeholderOption.value = '';
             placeholderOption.text = 'Select a skill';
             selectElement.add(placeholderOption);
 
-            choice.from.options.forEach(option => {
+            options.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option.item.index;
                 optionElement.text = `${option.item.name}`;
@@ -87,12 +102,16 @@ class CharacterUIUpdater {
             });
 
             container.appendChild(selectElement);
-        });
+        }
+        
     }
+    
 
     static updateAbilityBonuses(bonuses) {
-        if(!bonuses) return;
+        if(!bonuses)    throw new Error("Missing bonuses data!"); 
+        
         const abilityBonusContainer = document.getElementById('abilityBonuses');
+        
         if (!abilityBonusContainer) return;
         abilityBonusContainer.innerHTML = '';
 
@@ -175,6 +194,10 @@ class CharacterUIUpdater {
         const container = document.getElementById('proficiencies');
         if (!container) return;
         container.innerHTML = '';
+    
+        if(!proficiencies){
+            proficiencies = [{ name: "None"}];
+        }
 
         proficiencies.forEach(proficiency => {
             const listItem = document.createElement('li');
@@ -186,6 +209,10 @@ class CharacterUIUpdater {
     static updateSavingThrows(savingThrows) {
         const container = document.getElementById('savingThrows');
         container.innerHTML = '';
+
+        if(!savingThrows){
+            savingThrows = [{ name: "None"}];
+        }
         
         savingThrows.forEach(saveThrow => {
             const listItem = document.createElement('li');
@@ -199,6 +226,10 @@ class CharacterUIUpdater {
         if (!container) return;
         container.innerHTML = '';
 
+        if(!equipment){
+            equipment = [{ equipment: { name: "None" }, quantity: 0}];
+        }
+
         equipment.forEach(item => {
             const listItem = document.createElement('li');
             listItem.textContent = `${item.equipment.name} x${item.quantity}`;
@@ -206,7 +237,7 @@ class CharacterUIUpdater {
         });
     }
 
-    static updateSpellcasting(spellcasting) {
+    static updateSpellCasting(spellcasting) {
         const container = document.getElementById('spellcasting');
         container.innerHTML = ''; // Clear existing content
         

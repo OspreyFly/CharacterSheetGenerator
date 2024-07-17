@@ -1,9 +1,6 @@
+import '@testing-library/jest-dom';
 import CharacterUIUpdater from './create_character_ui';
 import { JSDOM } from 'jsdom';
-
-const dom = new JSDOM('<!doctype html><html><body></body></html>');
-global.window = dom.window;
-global.document = window.document;
 
 const race_data = {
 	"index": "elf",
@@ -380,6 +377,12 @@ const html_mock = `<div>
 <input type="button" id="accept" value="Accept">
 </div>`;
 
+const dom = new JSDOM(`<!doctype html><html><body>${html_mock}</body></html>`);
+global.window = dom.window;
+global.document = window.document;
+
+
+
 describe('CharacterUIUpdater should accept API data to use and make html content', () => {
     beforeEach(() => {
         document.body.innerHTML = html_mock;
@@ -388,13 +391,14 @@ describe('CharacterUIUpdater should accept API data to use and make html content
         const updateUI = CharacterUIUpdater.updateUI;
         it("should call the correct methods for race || class", () => {
             const basicDetails = jest.spyOn(CharacterUIUpdater, 'updateBasicDetails').mockImplementation(() => {});
-            updateUI(race_data); 
+            updateUI(race_data, 'race'); 
             expect(basicDetails).toHaveBeenCalled();
             basicDetails.mockRestore();
         });
         it("should handle errors thrown by the other methods when characterData is invalid", () => {
             document.body.innerHTML = 'no elements to find';
-            let result = updateUI({ name: "joey"});
+            let result = updateUI({ name: "joey"}, 'race');
+			console.log(result);
 
             expect(result).toEqual("One or more elements not found");
         });
@@ -471,8 +475,361 @@ describe('CharacterUIUpdater should accept API data to use and make html content
             expect(document.body.innerHTML).toEqual(expectedHTML);
         });
         it("should handle errors when characterData is invalid", () => {
-            const expectedError = updateBasicDetails("oof");
-            expect(expectedError.message).toEqual('')
-        });
+			
+			expect(() => updateBasicDetails({ oof: "oof" })).toThrow("Missing required characterData properties: speed, alignment, size");
+		});
     });
+});
+
+describe('updateProficiencyChoices', () => {
+	const updateProficiencyChoices = CharacterUIUpdater.updateProficiencyChoices;
+	it('creates the correct number of select elements with identical options', () => {
+        const proficiencyChoices = 
+			{
+				"desc": "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
+				"choose": 2,
+				"type": "proficiencies",
+				"from": {
+					"option_set_type": "options_array",
+					"options": [
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-animal-handling",
+								"name": "Skill: Animal Handling",
+								"url": "/api/proficiencies/skill-animal-handling"
+							}
+						},
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-athletics",
+								"name": "Skill: Athletics",
+								"url": "/api/proficiencies/skill-athletics"
+							}
+						},
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-intimidation",
+								"name": "Skill: Intimidation",
+								"url": "/api/proficiencies/skill-intimidation"
+							}
+						},
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-nature",
+								"name": "Skill: Nature",
+								"url": "/api/proficiencies/skill-nature"
+							}
+						},
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-perception",
+								"name": "Skill: Perception",
+								"url": "/api/proficiencies/skill-perception"
+							}
+						},
+						{
+							"option_type": "reference",
+							"item": {
+								"index": "skill-survival",
+								"name": "Skill: Survival",
+								"url": "/api/proficiencies/skill-survival"
+							}
+						}
+					]
+				}
+			}
+		const options = proficiencyChoices.from.options;
+
+        updateProficiencyChoices(proficiencyChoices);
+
+        const container = document.getElementById('proficiencyChoicesContainer');
+        expect(container.children.length).toBe(proficiencyChoices.choose);
+    });
+	it("should handle errors when proficiencyChoices is invalid", () => {
+			expect(() => updateProficiencyChoices(undefined)).toThrow("Missing proficiency choices!");
+	});
+});
+
+describe('updateAbilityBonuses', () => {
+	const updateAbilityBonuses = CharacterUIUpdater.updateAbilityBonuses;
+	let ability_bonuses =  [{
+			"ability_score": {
+				"index": "dex",
+				"name": "DEX",
+				"url": "/api/ability-scores/dex"
+			},
+			"bonus": 2
+		}];
+
+	it('creates the correct number of li elements', () => {
+        updateAbilityBonuses(ability_bonuses);
+		const container = document.getElementById("abilityBonuses");
+        expect(document.getElementById(`ability-score-dex`)).toBeTruthy;
+		expect(container.childElementCount).toEqual(ability_bonuses.length);
+    });
+	it("should handle errors when ability_bonuses is invalid", () => {
+			expect(() => updateAbilityBonuses(undefined)).toThrow("Missing bonuses data!");
+	});
+});
+
+describe('updateStartingProficiencies', () => {
+	const updateStartingProficiencies = CharacterUIUpdater.updateStartingProficiencies;
+	const proficiencies = [
+		{
+			"index": "light-armor",
+			"name": "Light Armor",
+			"url": "/api/proficiencies/light-armor"
+		},
+		{
+			"index": "medium-armor",
+			"name": "Medium Armor",
+			"url": "/api/proficiencies/medium-armor"
+		},
+		{
+			"index": "shields",
+			"name": "Shields",
+			"url": "/api/proficiencies/shields"
+		},
+		{
+			"index": "simple-weapons",
+			"name": "Simple Weapons",
+			"url": "/api/proficiencies/simple-weapons"
+		},
+		{
+			"index": "martial-weapons",
+			"name": "Martial Weapons",
+			"url": "/api/proficiencies/martial-weapons"
+		},
+		{
+			"index": "saving-throw-str",
+			"name": "Saving Throw: STR",
+			"url": "/api/proficiencies/saving-throw-str"
+		},
+		{
+			"index": "saving-throw-con",
+			"name": "Saving Throw: CON",
+			"url": "/api/proficiencies/saving-throw-con"
+		}
+	];
+	
+	it('creates the correct number of li elements', () => {
+        updateStartingProficiencies(proficiencies);
+		// define container after it has been modified
+		let container = document.getElementById("startingProficiencies");
+
+        expect(document.getElementById(`ability-score-dex`)).toBeTruthy;
+		expect(proficiencies.length).toEqual(container.childElementCount);
+    });
+	it("should check for falsy proficiencies then output a message that there is none", () => {
+		updateStartingProficiencies(undefined);
+		let container = document.getElementById("startingProficiencies");
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateLanguages', () => {
+	const updateLanguages = CharacterUIUpdater.updateLanguages;
+	let languages = [
+		{
+			"index": "common",
+			"name": "Common",
+			"url": "/api/languages/common"
+		},
+		{
+			"index": "elvish",
+			"name": "Elvish",
+			"url": "/api/languages/elvish"
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateLanguages(languages);
+		let container = document.getElementById('languages');
+		expect(container.childElementCount).toEqual(languages.length);
+	});
+	it('should check for falsy language then output a message that there is none"', () => {
+		updateLanguages(undefined);
+		let container = document.getElementById('languages');
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateTraits', () => {
+	const updateTraits = CharacterUIUpdater.updateTraits;
+	let traits = [
+		{
+			"index": "darkvision",
+			"name": "Darkvision",
+			"url": "/api/traits/darkvision"
+		},
+		{
+			"index": "fey-ancestry",
+			"name": "Fey Ancestry",
+			"url": "/api/traits/fey-ancestry"
+		},
+		{
+			"index": "trance",
+			"name": "Trance",
+			"url": "/api/traits/trance"
+		},
+		{
+			"index": "keen-senses",
+			"name": "Keen Senses",
+			"url": "/api/traits/keen-senses"
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateTraits(traits);
+		let container = document.getElementById('traits');
+		expect(container.childElementCount).toEqual(traits.length);
+	});
+	it('should check for falsy traits then output a message that there is none"', () => {
+		updateTraits(undefined);
+		let container = document.getElementById('traits');
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateSubraces', () => {
+	const updateSubraces = CharacterUIUpdater.updateSubraces;
+	let subraces = [
+		{
+			"index": "high-elf",
+			"name": "High Elf",
+			"url": "/api/subraces/high-elf"
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateSubraces(subraces);
+		let container = document.getElementById('subraces');
+		expect(container.childElementCount).toEqual(subraces.length);
+	});
+	it('should check for falsy subraces then output a message that there is none"', () => {
+		updateSubraces(undefined);
+		let container = document.getElementById('subraces');
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateProficiencies', () => {
+	const updateProficiencies = CharacterUIUpdater.updateProficiencies;
+	let proficiencies = [
+		{
+			"index": "light-armor",
+			"name": "Light Armor",
+			"url": "/api/proficiencies/light-armor"
+		},
+		{
+			"index": "medium-armor",
+			"name": "Medium Armor",
+			"url": "/api/proficiencies/medium-armor"
+		},
+		{
+			"index": "shields",
+			"name": "Shields",
+			"url": "/api/proficiencies/shields"
+		},
+		{
+			"index": "simple-weapons",
+			"name": "Simple Weapons",
+			"url": "/api/proficiencies/simple-weapons"
+		},
+		{
+			"index": "martial-weapons",
+			"name": "Martial Weapons",
+			"url": "/api/proficiencies/martial-weapons"
+		},
+		{
+			"index": "saving-throw-str",
+			"name": "Saving Throw: STR",
+			"url": "/api/proficiencies/saving-throw-str"
+		},
+		{
+			"index": "saving-throw-con",
+			"name": "Saving Throw: CON",
+			"url": "/api/proficiencies/saving-throw-con"
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateProficiencies(proficiencies);
+		let container = document.getElementById('proficiencies');
+		expect(container.childElementCount).toEqual(proficiencies.length);
+	});
+	it('should check for falsy proficiencies then output a message that there is none"', () => {
+		updateProficiencies(undefined);
+		let container = document.getElementById('proficiencies');
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateSavingThrows', () => {
+	const updateSavingThrows = CharacterUIUpdater.updateSavingThrows;
+	let savingThrows = [
+		{
+			"index": "str",
+			"name": "STR",
+			"url": "/api/ability-scores/str"
+		},
+		{
+			"index": "con",
+			"name": "CON",
+			"url": "/api/ability-scores/con"
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateSavingThrows(savingThrows);
+		let container = document.getElementById('savingThrows');
+		expect(container.childElementCount).toEqual(savingThrows.length);
+	});
+	it('should check for falsy savingThrows then output a message that there is none"', () => {
+		updateSavingThrows(undefined);
+		let container = document.getElementById('savingThrows');
+		expect(container.children[0].textContent).toEqual("None");
+	});
+});
+
+describe('updateStartingEquipment', () => {
+	const updateStartingEquipment = CharacterUIUpdater.updateStartingEquipment;
+	let equipment = [
+		{
+			"equipment": {
+				"index": "explorers-pack",
+				"name": "Explorer's Pack",
+				"url": "/api/equipment/explorers-pack"
+			},
+			"quantity": 1
+		},
+		{
+			"equipment": {
+				"index": "javelin",
+				"name": "Javelin",
+				"url": "/api/equipment/javelin"
+			},
+			"quantity": 4
+		}
+	];
+	it('creates the correct number of li elements', () => {
+		updateStartingEquipment(equipment);
+		let container = document.getElementById('startingEquipment');
+		expect(container.childElementCount).toEqual(equipment.length);
+	});
+	it('should check for falsy equipment then output a message that there is none"', () => {
+		updateStartingEquipment(undefined);
+		let container = document.getElementById('startingEquipment');
+		expect(container.children[0].textContent).toEqual("None x0");
+	});
+});
+
+describe('updateSpellCasting', () => {
+
+	it('', () => {
+
+	});
+	it('', () => {
+
+	});
 });
