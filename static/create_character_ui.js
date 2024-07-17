@@ -1,53 +1,68 @@
 class CharacterUIUpdater {
     static updateUI = (characterData) => {
-        console.log(characterData);
+        try{
+            if(!characterData.hit_die){
+                // Update basic details RACE
+            
+                this.updateBasicDetails(characterData);
 
-        if(!characterData.hit_die){
-            // Update basic details RACE
-        
-            this.updateBasicDetails(characterData);
+                // Update ability bonuses RACE
+                this.updateAbilityBonuses(characterData.ability_bonuses);
 
-            // Update ability bonuses RACE
-            this.updateAbilityBonuses(characterData.ability_bonuses);
+                // Update starting proficiencies RACE
+                this.updateStartingProficiencies(characterData.starting_proficiencies);
 
-            // Update starting proficiencies RACE
-            this.updateStartingProficiencies(characterData.starting_proficiencies);
+                // Update languages RACE
+                this.updateLanguages(characterData.languages);
 
-            // Update languages RACE
-            this.updateLanguages(characterData.languages);
+                // Update traits RACE
+                this.updateTraits(characterData.traits);
 
-            // Update traits RACE
-            this.updateTraits(characterData.traits);
+                // Update subraces RACE
+                this.updateSubraces(characterData.subraces);
+            }else{
+                // Update proficiency choices CLASS
+                this.updateProficiencyChoices(characterData.proficiency_choices);
 
-            // Update subraces RACE
-            this.updateSubraces(characterData.subraces);
-        }else{
-            // Update proficiency choices CLASS
-            this.updateProficiencyChoices(characterData.proficiency_choices);
+                // Update proficiencies CLASS
+                this.updateProficiencies(characterData.proficiencies);
 
-            // Update proficiencies CLASS
-            this.updateProficiencies(characterData.proficiencies);
+                // Update saving throws CLASS
+                this.updateSavingThrows(characterData.saving_throws);
 
-            // Update saving throws CLASS
-            this.updateSavingThrows(characterData.saving_throws);
+                // Update starting equipment CLASS
+                this.updateStartingEquipment(characterData.starting_equipment);
 
-            // Update starting equipment CLASS
-            this.updateStartingEquipment(characterData.starting_equipment);
-
-            if(!characterData.spellcasting){
-                characterData.spellcasting = characterData.spellcasting || {};
-                characterData.spellcasting.info = [{ name: "Spell Casting Ability", desc: ["None"] }];
+                if(!characterData.spellcasting){
+                    characterData.spellcasting = characterData.spellcasting || {};
+                    characterData.spellcasting.info = [{ name: "Spell Casting Ability", desc: ["None"] }];
+                }
+                // Update spellcasting details CLASS
+                this.updateSpellcasting(characterData.spellcasting);
             }
-            // Update spellcasting details CLASS
-            this.updateSpellcasting(characterData.spellcasting);
+        }catch(err){
+            return err.message;
+        }  
+    }
+
+    static updateBasicDetails(characterData) {
+        try {
+            const speedElement = document.getElementById('characterSpeed');
+            const alignmentElement = document.getElementById('characterAlignment');
+            const sizeElement = document.getElementById('characterSize');
+    
+            if (speedElement && alignmentElement && sizeElement) {
+                speedElement.textContent = characterData.speed;
+                alignmentElement.textContent = characterData.alignment;
+                sizeElement.textContent = characterData.size;
+            } else {
+                throw new Error("One or more elements not found");
+            }
+        } catch (err) {
+            throw err;
         }
     }
-
-    static updateBasicDetails(characterData) {  
-        document.getElementById('characterSpeed').textContent = characterData.speed;
-        document.getElementById('characterAlignment').textContent = characterData.alignment;
-        document.getElementById('characterSize').textContent = characterData.size;
-    }
+    
 
     static updateProficiencyChoices(proficiencyChoices) {
         const container = document.getElementById('proficiencyChoicesContainer');
