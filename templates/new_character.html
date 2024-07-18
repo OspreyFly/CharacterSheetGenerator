@@ -6,67 +6,68 @@
     <b style="color:white; text-align:right;">{{ user.username }}</b>
 </span>
 <div>
-    <h1 class="header-content">Character Creator</h1>
-    <div class="body-content">
-        <!-- Select Race & Class -->
-        <h3>Choose Race and Class</h3>
-        <select id="race"></select>
-        <select id="class"></select>
-        <p><small style="color: red">Warning: Changing these values may undo your changes!</small></p>
+    <form action="/save-character" method="post">
+        <h1 class="header-content">Character Creator</h1>
+        <div class="body-content">
+            <!-- Select Race & Class -->
+            <h3>Choose Race and Class</h3>
+            <select id="race"></select>
+            <select id="class"></select>
+            <p><small style="color: red">Warning: Changing these values may undo your changes!</small></p>
 
-        <!-- Basic Details -->
-        <h3>Basic Details</h3>
-        <label>Character Name</label><br>
-        <input type="text" id="characterName"><br>
-        <label>Speed</label>
-        <p id="characterSpeed"></p>
-        <label>Alignment</label>
-        <p id="characterAlignment"></p>
-        <label>Size</label>
-        <p id="characterSize"></p>
+            <!-- Basic Details -->
+            <h3>Basic Details</h3>
+            <label>Character Name</label><br>
+            <input type="text" id="characterName"><br>
+            <label>Speed</label>
+            <p id="characterSpeed"></p>
+            <label>Alignment</label>
+            <p id="characterAlignment"></p>
+            <label>Size</label>
+            <p id="characterSize"></p>
 
-        <!-- Proficiency Choices -->
-        <h3>Proficiency Choices</h3>
-        <div id="proficiencyChoicesContainer"></div>
+            <!-- Proficiency Choices 
+            <h3>Proficiency Choices</h3>
+            <div id="proficiencyChoicesContainer"></div>
+            -->
+            <!-- Ability Bonuses -->
+            <h3>Ability Bonuses</h3>
+            <ul id="abilityBonuses"></ul>
 
-        <!-- Ability Bonuses -->
-        <h3>Ability Bonuses</h3>
-        <ul id="abilityBonuses"></ul>
+            <!-- Starting Proficiencies -->
+            <h3>Starting Proficiencies</h3>
+            <ul id="startingProficiencies"></ul>
 
-        <!-- Starting Proficiencies -->
-        <h3>Starting Proficiencies</h3>
-        <ul id="startingProficiencies"></ul>
+            <!-- Languages -->
+            <h3>Languages</h3>
+            <ul id="languages"></ul>
 
-        <!-- Languages -->
-        <h3>Languages</h3>
-        <ul id="languages"></ul>
+            <!-- Traits -->
+            <h3>Traits</h3>
+            <ul id="traits"></ul>
 
-        <!-- Traits -->
-        <h3>Traits</h3>
-        <ul id="traits"></ul>
+            <!-- Subraces -->
+            <h3>Subraces</h3>
+            <ul id="subraces"></ul>
 
-        <!-- Subraces -->
-        <h3>Subraces</h3>
-        <ul id="subraces"></ul>
+            <!-- Proficiencies -->
+            <h3>Proficiencies</h3>
+            <ul id="proficiencies"></ul>
 
-        <!-- Proficiencies -->
-        <h3>Proficiencies</h3>
-        <ul id="proficiencies"></ul>
+            <!-- Saving Throws -->
+            <h3>Saving Throws</h3>
+            <ul id="savingThrows"></ul>
 
-        <!-- Saving Throws -->
-        <h3>Saving Throws</h3>
-        <ul id="savingThrows"></ul>
+            <!-- Starting Equipment -->
+            <h3>Starting Equipment</h3>
+            <ul id="startingEquipment"></ul>
 
-        <!-- Starting Equipment -->
-        <h3>Starting Equipment</h3>
-        <ul id="startingEquipment"></ul>
-
-        <!-- Spellcasting Details -->
-        <h3>Spellcasting Details</h3>
-        <div id="spellcasting"></div>
-    </div>
-
-    <input type="button" id="accept" value="Accept">
+            <!-- Spellcasting Details -->
+            <h3>Spellcasting Details</h3>
+            <div id="spellcasting"></div>
+        </div>
+        <input type="button" id="accept" value="Accept">
+    </form>
 </div>
 
 <script type="module" src="/static/create_character.js"></script>

@@ -154,24 +154,25 @@ def makePdf():
         redirect("/signup")
 
 
+from flask import request, jsonify
+import json
+
+
 @app.route("/save-character", methods=["POST"])
 def saveCharacter():
-    if g.user:
-        data = request.get_json()
-        print(data)
-        character_data = {key: data[key] for key in data}
+    data = request.get_json()
+    print(data)
+    character_data = {key: data[key] for key in data}
 
-        character = Characters(
-            user_id=session[CURR_USER_KEY],
-            **character_data,  # Unpack the dictionary to pass the arguments to the constructor
-        )
-        # Create a new Character instance with the received data
-        db.session.add(character)  # Add the new character to the session
-        try:
-            db.session.commit()  # Attempt to commit the changes to the database
-        except Exception as e:
-            db.session.rollback()  # Rollback the session if an error occurred
-            print(f"An error occurred: {e}")
-        return {"message": "Character saved successfully"}, 200
-    else:
-        redirect("/signup")
+    character = Characters(
+        user_id=session[CURR_USER_KEY],
+        **character_data,  # Unpack the dictionary to pass the arguments to the constructor
+    )
+    # Create a new Character instance with the received data
+    db.session.add(character)  # Add the new character to the session
+    try:
+        db.session.commit()  # Attempt to commit the changes to the database
+    except Exception as e:
+        db.session.rollback()  # Rollback the session if an error occurred
+        print(f"An error occurred: {e}")
+    return {"message": "Character saved successfully"}, 200

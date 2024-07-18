@@ -26,7 +26,7 @@ class CharacterUIUpdater {
             if(type === 'class'){
                 console.log('class hit');
                 // Update proficiency choices CLASS
-                this.updateProficiencyChoices(characterData.proficiency_choices);
+               // this.updateProficiencyChoices(characterData.proficiency_choices[0]);
 
                 // Update proficiencies CLASS
                 this.updateProficiencies(characterData.proficiencies);
@@ -73,38 +73,38 @@ class CharacterUIUpdater {
     
     
 
-    static updateProficiencyChoices(proficiencyChoices) {
+    static updateProficiencyChoices(proficiencyChoice) {
         const container = document.getElementById('proficiencyChoicesContainer');
         if (!container) return;
+    
         container.innerHTML = '';
-        
-        if(!proficiencyChoices){
+    
+        if (!proficiencyChoice || !proficiencyChoice.from || !Array.isArray(proficiencyChoice.from.options)) {
             throw new Error("Missing proficiency choices!");
         }
-        const options = proficiencyChoices.from.options;
-        
-
-        for(let i = 0; i < proficiencyChoices.choose; i++){
+        for(let i = 0; i < proficiencyChoice.choose; i++){
             const selectElement = document.createElement('select');
-            selectElement.id = `proficiencyChoice-${options[i].index}`;
-            selectElement.setAttribute('name', options[i].index);
-
+            selectElement.id = 'proficiencyChoice'; // Simplified ID
+            selectElement.setAttribute('name', 'proficiency-choice');
+    
             const placeholderOption = document.createElement('option');
             placeholderOption.value = '';
             placeholderOption.text = 'Select a skill';
             selectElement.add(placeholderOption);
-
-            options.forEach(option => {
+    
+            proficiencyChoice.from.options.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option.item.index;
                 optionElement.text = `${option.item.name}`;
                 selectElement.add(optionElement);
             });
-
+    
             container.appendChild(selectElement);
         }
-        
     }
+    
+    
+    
     
 
     static updateAbilityBonuses(bonuses) {
@@ -240,39 +240,40 @@ class CharacterUIUpdater {
     static updateSpellCasting(spellcasting) {
         const container = document.getElementById('spellcasting');
         container.innerHTML = ''; // Clear existing content
-        
-        // Iterate over the 'info' array in the spellcasting object
-        spellcasting.info.forEach(item => {
-            // Create a new <li> element for the list item
-            const listItem = document.createElement('li');
-            
-            // Create a new <label> element for the name
-            const labelElement = document.createElement('label');
-            labelElement.textContent = item.name; // Set the text content of the labelElement to the name
-            
-            // Append the labelElement to the listItem
-            listItem.appendChild(labelElement);
-            
-            // Check if the 'desc' property is an array
-            if (Array.isArray(item.desc)) {
-                // Concatenate all descriptions into a single string, separated by <br> for display
-                let descriptionContent = '';
-                item.desc.forEach(description => {
-                    descriptionContent += '<br>' + description; // Add each description preceded by a <br>
-                });
-                
-                // Create a new <div> or <span> element to hold the descriptions
-                // This is necessary because adding raw HTML (like <br>) directly to innerHTML can lead to security issues
-                const descriptionContainer = document.createElement('div');
-                descriptionContainer.innerHTML = descriptionContent; // Safely insert the descriptions
-                
-                // Append the descriptionContainer to the listItem
-                listItem.appendChild(descriptionContainer);
-            }
+
+        if (!spellcasting || Object.keys(spellcasting).length === 0) {
+            spellcasting = { info: [{ name: "No Spell Casting Provided" }] };
     
-            // Append the listItem to the container
+            const listItem = document.createElement('li');
+            const labelElement = document.createElement('label');
+            labelElement.textContent = spellcasting.info[0].name;
+    
+            listItem.appendChild(labelElement);
             container.appendChild(listItem);
-        });
+        }
+        else{
+            spellcasting.info.forEach(item => {
+                const listItem = document.createElement('li');
+                const labelElement = document.createElement('label');
+                labelElement.textContent = item.name; 
+                
+                listItem.appendChild(labelElement);
+                
+                if (Array.isArray(item.desc)) {
+                    let descriptionContent = '';
+                    item.desc.forEach(description => {
+                        descriptionContent += '<br>' + description; 
+                    });
+                    
+                    const descriptionContainer = document.createElement('div');
+                    descriptionContainer.innerHTML = descriptionContent; 
+                    listItem.appendChild(descriptionContainer);
+                }
+                container.appendChild(listItem);
+            });
+        }
+        
+        
     }
 }
 
