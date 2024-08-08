@@ -9,7 +9,7 @@
 <div class="body-content">
     <ol>
         {% for character in characters %}
-        <li><b>{{ character.charactername }}</b>
+        <li><b style="color: gold">{{ character.charactername }}</b>
             <span>{{ character.race }} - {{ character.charclass }}</span>
         </li>
         {% endfor %}
@@ -18,8 +18,8 @@
 <h1 class="header-content">Generate PDF</h1>
 <div class="body-content">
     <p>To generate a PDF from a saved character, submit the character's name. You must type it as it appears above.</p>
-    <input type="text" placeholder="Character Name Here" id="character-pdf">
-    <input type="button" id="accept-pdf" value="Make PDF">
+    <input type="text" class="input-style" placeholder="Character Name Here" id="character-pdf">
+    <input type="button" class="accept" id="accept-pdf" value="Make PDF">
 </div>
 <script src="/static/get_pdf.js"></script>
 {% endblock %}

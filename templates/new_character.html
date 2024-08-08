@@ -11,14 +11,14 @@
         <div class="body-content">
             <!-- Select Race & Class -->
             <h3>Choose Race and Class</h3>
-            <select id="race"></select>
-            <select id="class"></select>
+            <select class="select-style" id="race"></select>
+            <select class="select-style" id="class"></select>
             <p><small style="color: red">Warning: Changing these values may undo your changes!</small></p>
 
             <!-- Basic Details -->
             <h3>Basic Details</h3>
-            <label>Character Name</label><br>
-            <input type="text" id="characterName"><br>
+            <label>Character Name: </label>
+            <input type="text" class="input-style" id="characterName"><br>
             <label>Speed</label>
             <p id="characterSpeed"></p>
             <label>Alignment</label>
@@ -65,8 +65,14 @@
             <!-- Spellcasting Details -->
             <h3>Spellcasting Details</h3>
             <div id="spellcasting"></div>
+
+            <div id="notification"
+                style="display:none; position:fixed; bottom:10px; right:10px; background-color:#4CAF50; color:white; padding:15px; border-radius:5px;">
+                Character saved successfully!
+            </div>
+            <input type="button" class="accept" id="accept" value="Accept">
         </div>
-        <input type="button" id="accept" value="Accept">
+
     </form>
 </div>
 

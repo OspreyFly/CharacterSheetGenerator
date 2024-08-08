@@ -130,7 +130,7 @@ class CharacterUIUpdater {
     static updateStartingProficiencies(proficiencies) {
         const container = document.getElementById('startingProficiencies');
         if (!container) return;
-        container.innerHTML = '';
+        container.innerHTML = 'No starting proficiencies';
 
         if(!proficiencies){
             proficiencies = [{ name: "None"}];

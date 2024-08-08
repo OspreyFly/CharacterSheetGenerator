@@ -1,18 +1,18 @@
-from sqlite3 import IntegrityError
 from flask import (
     Flask,
     render_template,
     redirect,
     flash,
     send_file,
+    url_for,
+    abort,
     session,
     request,
     g,
 )
-
+from io import BytesIO
 from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Characters
-
 from pdfGen import fillFields
 
 CURR_USER_KEY = "curr_user"
@@ -144,18 +144,41 @@ def newCharacter():
 @app.route("/makepdf", methods=["POST"])
 def makePdf():
     if g.user:
-        data = request.json["data"]
+        # Extract and validate the JSON data
+        data = request.json.get("data")
+        if not data:
+            abort(400, description="No data provided")
+
+        # Query the database for the character
         character = Characters.query.filter_by(charactername=data).first()
-        pdfPath = fillFields(
-            character.charactername, character.charclass, character.race
+        if character is None:
+            abort(404, description="Character not found")
+
+        # Generate the PDF
+        try:
+            pdfOutput = fillFields(
+                character.charactername, character.charclass, character.race
+            )
+        except Exception as e:
+            abort(500, description=f"Error generating PDF: {str(e)}")
+
+        # Ensure the PDF output is a BytesIO object
+        if not isinstance(pdfOutput, BytesIO):
+            abort(500, description="PDF generation failed")
+
+        pdfOutput.seek(0)  # Ensure the pointer is at the start of the BytesIO object
+
+        # Serve the PDF file
+        return send_file(
+            pdfOutput,
+            as_attachment=True,
+            download_name=f"{character.charactername}.pdf",
+            mimetype="application/pdf",  # Specify the MIME type for PDFs
         )
-        return send_file(pdfPath, as_attachment=True)
     else:
-        redirect("/signup")
-
-
-from flask import request, jsonify
-import json
+        return redirect(
+            url_for("signup")  # Adjust 'signup' to your actual signup route
+        )
 
 
 @app.route("/save-character", methods=["POST"])

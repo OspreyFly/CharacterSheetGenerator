@@ -2,7 +2,9 @@ body {
     background-image: url("https://wallpapers.com/images/hd/dnd-two-headed-white-dragon-lv6d9gbsd5fdgrzs.jpg");
     background-size: cover;
     background-attachment: fixed;
-    
+    font-family: "Rosarivo", cursive;
+    font-weight: 200;
+    font-style: italic;
 }
 
 h3 {
@@ -10,6 +12,7 @@ h3 {
 }
 
 label {
+    margin-top: 50px;
     color: rgb(255, 255, 197);
     font-weight: bold;
 }
@@ -52,6 +55,59 @@ li {
     color: white;
     font-size: 1rem;
     padding: 15px 15px;
+}
+
+.accept {
+    background-color: rgb(100,0,0);
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.accept:hover {
+    background-color: rgb(150, 50, 50); /* Darker shade on hover */
+}
+
+.accept:active {
+    transform: scale(0.95); /* Slightly reduce size on click */
+    box-shadow: 0 5px gold; /* Add shadow for depth */
+}
+
+.select-style {
+    color: rgb(255, 255, 255); /* Text color */
+    background-color:rgb(100, 0, 0);
+    font-size: 16px; /* Font size */
+    padding: 10px 24px; /* Padding */
+    
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.input-style {
+    background-color: rgb(100, 0, 0); /* Background color */
+    color:rgb(255, 255, 197); /* Text color */
+    padding: 10px 24px; /* Padding */
+    text-align: center; /* Center align text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display inline-block */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.input-style:hover {
+    background-color: rgb(150, 50, 50); /* Darker shade on hover */
+}
+
+.input-style:active {
+    transform: scale(0.95); /* Slightly reduce size on click */
+    box-shadow: 0 5px gold; /* Add shadow for depth */
 }
 
 

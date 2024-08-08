@@ -45,8 +45,46 @@ characterName.addEventListener('input', function(){
 
 // Handle form submission for saving the character
 const acceptBtn = document.getElementById("accept");
-acceptBtn.addEventListener('mousedown', function(){
-    axios.post('/save-character', JSON.stringify(character_info), {
-        headers: {'Content-Type': 'application/json'}
-    })
-}).then((response) => response.json()).catch((error) => console.error('Error:', error));
+const notification = document.getElementById("notification");
+
+acceptBtn.addEventListener('mousedown', function() {
+    //Check for required fields
+    if(!character_info.charactername){
+        notification.innerHTML = 'Missing Name!'
+        notification.style.backgroundColor = '#FF0000';
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000); // Hide after 3 seconds
+    }
+    else{
+        fetch('/save-character', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(character_info)
+        })
+        .then((response) => {
+            // Check if the request was successful
+            if (response.ok) {
+                // Show the notification (Custom notification example)
+                notification.innerHTML = 'Character Saved!'
+        notification.style.backgroundColor = '#55FF55';
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+    
+                // Optionally, use alert for a simple notification
+                // alert("Character saved successfully!");
+            } else {
+                console.error('Failed to save character:', response.statusText);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    
+});

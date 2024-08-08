@@ -1,6 +1,5 @@
 import CharacterUIUpdater from "./create_character_ui.js";
 const API_BASE_URL = "https://www.dnd5eapi.co/api/";
-//import axios from 'axios'; //Only for testing
 
 function createElementOption(value, text) {  
     const option = document.createElement('option');
@@ -9,21 +8,29 @@ function createElementOption(value, text) {
     return option;
   }
   
-
 const populateDropdown = (selectElement, options) => {
     options.forEach(option => selectElement.add(createElementOption(option, option)));
 };
 
 const fetchData = async (url) => {
     try {
-        const response = await axios.get(url);
-        return response.data;
+        // Using fetch instead of axios
+        const response = await fetch(url);
+
+        // Check if the request was successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the response body as JSON
+        const data = await response.json();
+        return data;
+
     } catch (error) {
         console.error('Error fetching data:', error);
-        throw error;
+        throw error; // Rethrow the error or handle it as needed
     }
 };
-
 
 const handleSelectionChange =  (selectElement, character_info) => {
     selectElement.addEventListener('change', async () => {
