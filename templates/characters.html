@@ -17,8 +17,14 @@
 </div>
 <h1 class="header-content">Generate PDF</h1>
 <div class="body-content">
-    <p>To generate a PDF from a saved character, submit the character's name. You must type it as it appears above.</p>
-    <input type="text" class="input-style" placeholder="Character Name Here" id="character-pdf">
+    <p>To generate a PDF of a saved character, select their name from the dropdown menu below.</p>
+    <select class="select-style" class="select-style" id="character-pdf">
+        {% for character in characters %}
+        <option value="{{ character.charactername }}"><b style="color: gold">{{ character.charactername }}</b>
+            <span>{{ character.race }} - {{ character.charclass }}</span>
+        </option>
+        {% endfor %}
+    </select>
     <input type="button" class="accept" id="accept-pdf" value="Make PDF">
 </div>
 <script src="/static/get_pdf.js"></script>

@@ -1,5 +1,7 @@
 const makePdfBtn = document.getElementById("accept-pdf");
 const charForPdf = document.getElementById("character-pdf");
+console.log("1: ",charForPdf.value);
+
 
 makePdfBtn.addEventListener('mousedown', function() {
     fetch('/makepdf', {

@@ -130,11 +130,11 @@ class CharacterUIUpdater {
     static updateStartingProficiencies(proficiencies) {
         const container = document.getElementById('startingProficiencies');
         if (!container) return;
-        container.innerHTML = 'No starting proficiencies';
-
-        if(!proficiencies){
-            proficiencies = [{ name: "None"}];
+        
+        if (proficiencies && proficiencies.length === 0) {
+            proficiencies.push({ name: "None" });
         }
+
         proficiencies.forEach(proficiency => {
             const listItem = document.createElement('li');
             listItem.textContent = proficiency.name;
@@ -179,8 +179,8 @@ class CharacterUIUpdater {
         if (!container) return;
         container.innerHTML = '';
 
-        if(!subraces){
-            subraces = [{ name: "None"}];
+        if(subraces && subraces.length === 0){
+           subraces.push({ name: "None" });
         }
 
         subraces.forEach(subrace => {
