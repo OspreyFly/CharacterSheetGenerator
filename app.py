@@ -14,6 +14,7 @@ from io import BytesIO
 from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Characters
 from pdfGen import fillFields
+from sqlalchemy.exc import IntegrityError
 
 CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
@@ -58,10 +59,9 @@ def signup():
 
     If form not valid, present form.
 
-    If the there already is a user with that username: flash message
+    If there already is a user with that username: flash message
     and re-present form.
     """
-
     form = UserAddForm()
 
     if form.validate_on_submit():
@@ -76,6 +76,7 @@ def signup():
             flash("Username already taken", "danger")
             return render_template("signup.html", form=form)
 
+        # Ensure you have a function to handle login logic
         do_login(user)
 
         return redirect("/")
