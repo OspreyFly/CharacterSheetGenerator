@@ -41,7 +41,7 @@ Fully implementing the stat scores and prompting all necessary input will enable
 ## Testing
 
 ```
-1. Complete Install steps above
+1. Run 'npm install' to get JS dependencies
 2. Run the command 'npm test'
 ```
 
