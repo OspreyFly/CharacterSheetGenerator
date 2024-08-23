@@ -28,9 +28,6 @@ Created By: Noah Goff
 *D&D API used in project*
 https://www.dnd5eapi.co/api/
 
-*ABOUT*
-
-
 *FUTURE VERSIONS*
 Fully implementing the stat scores and prompting all necessary input will enable the app to fill out the pdf completely. I chose to ommit some complexity from the current version because this is only a proof of concept. Another step further would be to overhaul the user interface so that a limited window with multiple 'steps' or pages. The UI is made entirely from JS so there is some liberty to allow for a more graphic and detailed experience. Also, adding complexity to the database could allow for users to sort/filter their characters based on some characteristics they share e.g. sort by level or filter by race.
 
