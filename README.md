@@ -15,10 +15,11 @@ Before you begin, ensure you have met the following requirements:
 ## Install
 
 ```
-1. Create a virtual environment if desired.
-2. Use psql to a new database named 'dndchar' 
-3. Run 'seed.py' to generate relevant SQL tables in the database.
-4. Start the server 'flask run'
+1. If using venv -> source venv/bin/activate
+2. Install project dependencies pip install -r requirements.txt
+3. Use psql to make new database named 'dndchar' 
+4. Run 'seed.py' to generate relevant SQL tables in the database.
+5. Start the server 'flask run'
 ```
 
 ## Usage
@@ -28,9 +29,6 @@ Created By: Noah Goff
 *D&D API used in project*
 https://www.dnd5eapi.co/api/
 
-*ABOUT*
-
-
 *FUTURE VERSIONS*
 Fully implementing the stat scores and prompting all necessary input will enable the app to fill out the pdf completely. I chose to ommit some complexity from the current version because this is only a proof of concept. Another step further would be to overhaul the user interface so that a limited window with multiple 'steps' or pages. The UI is made entirely from JS so there is some liberty to allow for a more graphic and detailed experience. Also, adding complexity to the database could allow for users to sort/filter their characters based on some characteristics they share e.g. sort by level or filter by race.
 
@@ -38,6 +36,13 @@ Fully implementing the stat scores and prompting all necessary input will enable
 - Front-end (HTML, CSS, JS)
 - Back-end (Flask, Jinja2)
 - Database (PostgreSQL, SQAlchemy)
+```
+
+## Testing
+
+```
+1. Run 'npm install' to get JS dependencies
+2. Run the command 'npm test'
 ```
 
 
