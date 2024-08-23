@@ -15,10 +15,11 @@ Before you begin, ensure you have met the following requirements:
 ## Install
 
 ```
-1. Create a virtual environment if desired.
-2. Use psql to a new database named 'dndchar' 
-3. Run 'seed.py' to generate relevant SQL tables in the database.
-4. Start the server 'flask run'
+1. If using venv -> source venv/bin/activate
+2. Install project dependencies pip install -r requirements.txt
+3. Use psql to make new database named 'dndchar' 
+4. Run 'seed.py' to generate relevant SQL tables in the database.
+5. Start the server 'flask run'
 ```
 
 ## Usage
@@ -38,6 +39,13 @@ Fully implementing the stat scores and prompting all necessary input will enable
 - Front-end (HTML, CSS, JS)
 - Back-end (Flask, Jinja2)
 - Database (PostgreSQL, SQAlchemy)
+```
+
+## Testing
+
+```
+1. Run 'npm install' to get JS dependencies
+2. Run the command 'npm test'
 ```
 
 
