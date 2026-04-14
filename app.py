@@ -19,7 +19,7 @@ from sqlalchemy.exc import IntegrityError
 CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 app.app_context().push()
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///dndchar"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "secretKEY"
