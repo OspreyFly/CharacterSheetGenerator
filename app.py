@@ -10,6 +10,7 @@ from flask import (
     request,
     g,
 )
+import os
 from io import BytesIO
 from forms import UserAddForm, LoginForm
 from models import db, connect_db, User, Characters
